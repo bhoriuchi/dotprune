@@ -45,7 +45,7 @@ var obj = [
 ];
 
 
-var prunedObject = dotprune.prune(obj, ['id', 'name', 'groups.name', 'groups.station.name']);
+var prunedObject = dotprune.prune(obj, ['id', 'name', 'groups.name', 'groups.station']);
 var prettyObject = JSON.stringify(prunedObject, null, '  ');
 
 console.log(prettyObject);
