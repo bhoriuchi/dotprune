@@ -8,7 +8,9 @@
     "url": "git+https://github.com/bhoriuchi/dotprune.git"
   },
   "keywords": [
-    "api"
+    "json",
+    "prune",
+    "filter"
   ],
   "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
   "license": "MIT",
