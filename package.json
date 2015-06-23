@@ -1,0 +1,27 @@
+{
+  "name": "dotprune",
+  "version": "0.1.0",
+  "description": "Recursively filter JavaScript objects",
+  "main": "lib/prune.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhoriuchi/dotprune.git"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/bhoriuchi/dotprune",
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/bhoriuchi/dotprune/issues"
+  },
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "directories": {
+    "example": "example"
+  }
+}
