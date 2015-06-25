@@ -1,6 +1,6 @@
 {
   "name": "dotprune",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Recursively filter JavaScript objects",
   "main": "lib/prune.js",
   "repository": {
@@ -10,7 +10,8 @@
   "keywords": [
     "json",
     "prune",
-    "filter"
+    "filter",
+    "object"
   ],
   "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
   "license": "MIT",
