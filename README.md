@@ -19,7 +19,7 @@ npm install -g dotprune
 ```js
 var dotprune = require('dotprune');
 
-dotprune.prune(<Object>, <Properties Array>, [Optional: prune a copy]);
+var prunedObject = dotprune.prune(<Object>, <Properties Array>, [Optional: prune a copy]);
 ```
 
 
