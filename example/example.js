@@ -51,14 +51,16 @@ var pruned;
 
 
 // basic example
-console.log('-- Basic Prune ---');
+//console.log('-- Basic Prune ---');
 pruned = dotprune.prune(obj, [ 'id', 'name', 'groups.name', 'groups.station' ], true);
+//console.log(pruned);
 console.log(JSON.stringify(pruned, null, '  '));
-console.log('------------------');
+//console.log('------------------');
 
 // not prune example
 console.log('-- Not-Prune ---');
 pruned = dotprune.prune(obj, ['!name','!groups.station']);
+//console.log(pruned);
 console.log(JSON.stringify(obj, null, '  '));
 console.log('------------------');
 

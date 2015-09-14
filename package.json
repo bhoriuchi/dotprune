@@ -1,7 +1,7 @@
 {
   "name": "dotprune",
-  "version": "0.1.1",
-  "description": "Recursively filter JavaScript objects",
+  "version": "0.1.2",
+  "description": "Deep filter Javascript objects with dot notation",
   "main": "lib/prune.js",
   "repository": {
     "type": "git",
