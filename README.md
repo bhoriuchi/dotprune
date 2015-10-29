@@ -1,6 +1,6 @@
 
 
-# dotprune
+# ✂ dotprune ✂
 ---
 dotprune is a simple tool that allows you to remove all properties from a JavaScript object that are not present in present in an array of properties. dot notation can be used to specify sub properties to keep or prefix propertied with an ! to keep everything but them. If 
 you do not want to alter the original object, a boolean true value can be supplied as the third argument in the prune function.
