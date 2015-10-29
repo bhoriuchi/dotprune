@@ -2,7 +2,7 @@
 // Description: Example of dotprune at work
 //
 
-var dotprune = require('../lib/prune');
+var dotprune = require('../lib/dotprune');
 
 // define an array of objects to prune
 var obj = [
