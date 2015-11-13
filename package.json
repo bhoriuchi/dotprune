@@ -1,7 +1,7 @@
 {
   "name": "dotprune",
-  "version": "0.1.4",
-  "description": "Deep filter Javascript objects with dot notation",
+  "version": "0.1.5",
+  "description": "Deep filters for Javascript objects using dot notation",
   "main": "lib/dotprune.js",
   "repository": {
     "type": "git",
@@ -14,7 +14,11 @@
     "object",
     "circular",
     "remove",
-    "replace"
+    "replace",
+    "pluck",
+    "deep",
+    "deeppluck",
+    "pluckdeep"
   ],
   "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
   "license": "MIT",
