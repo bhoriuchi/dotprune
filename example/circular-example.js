@@ -19,4 +19,9 @@ var obj = dotprune.circular([main, main2], function(obj) {
 	return '[CustomCircular]';
 });
 
-console.log(JSON.stringify(obj, null, '  '));
+try {
+	console.log(JSON.stringify(obj, null, '  '));
+}
+catch (err) {
+	console.log(obj);
+}
