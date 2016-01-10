@@ -29,6 +29,12 @@ dotprune is a simple tool that allows you to perform operations on collections o
 * `collection` [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) - the collection to perform a deep pluck on.
 * `path` [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) - A string representation of the path to pluck. Array index and dot notation are supported.
 
+#### `dotprune.mergePush`( `target`, `source`, [`...sourceN`] )
+
+* `target` [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) - the object to merge into.
+* `source` [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) - the object to merge from.
+* `sourceN` [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) - additional objects to merge from.
+
 
 
 # Basic Prune Example
