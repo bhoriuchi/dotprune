@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.dotprune = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Remove Circular references from Javascript objects
  * 
@@ -13,82 +13,67 @@ module.exports = function(env) {
 	var circularDefault = '[Circular]';
 	
 	
-	function setValue(obj, key, value, seen) {
-		if (typeof(value) === 'function') {
+	// simple array value compare
+	function contains(list, value) {
+		for(var i = 0; i < list.length; i++) {
+			if (list[i] === value) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// function to replace circular references
+	function circular(obj, value, key, seen) {
+		
+		// set defaults
+		seen  = seen  || [];
+		value = value || circularDefault;
+		key   = key   || null;
+		
+		// check if seen contains the object
+		if (!contains(seen, obj)) {
 			
-			var newValue = value(obj[key], seen);
+			// if not push the object
+			seen.push(obj);
 			
-			if (newValue !== obj[key]) {
-				obj[key] = newValue;
+			// if the object is an array, loop through its elements and
+			// call circular on each element. use a clone of seen so that
+			// a "global" array is not used and the current property only
+			// knows about objects in its path
+			if (Array.isArray(obj)) {
+				_.forEach(obj, function(o, idx) {
+					obj[idx] = circular(o, value, key, _.clone(seen));
+				});	
+			}
+			
+			// if its not an array but is an object, loop through
+			// each property and call circular
+			else if (obj && typeof(obj) === 'object') {
+				_.forEach(obj, function(o, k) {
+					obj[k] = circular(o, value, k, _.clone(seen));
+				});
+			}
+		}
+		
+		// if the object has been seen, return the replacement value
+		else {
+			if (typeof(value) === 'function') {
+				obj = value(obj, key, _.clone(seen));
 			}
 			else {
-				obj[key] = circularDefault;
-			}
-			
-		}
-		else {
-			obj[key] = value;	
-		}
-		return value;
-	}
-	
-	
-	// function to replace circular references
-	function replaceCircularEx(obj, seen, value) {
-		if (obj && typeof(obj) === 'object' || typeof(obj) === 'function') {
-			var keys = Object.keys(obj);
-			
-			if (obj !== null && (typeof(obj) === 'object' || typeof(obj) === 'function')) {
-				seen.push(obj);
-			}
-			
-			for(var i = 0; i < keys.length; i++) {
-				
-				var key     = keys[i];
-				var current = obj[key];
-
-				if (current === obj) {
-					return setValue(obj, key, value, seen);
-				}
-				else if (seen.indexOf(current) !== -1) {
-					setValue(obj, key, value, seen);
-				}
-				else {
-					obj[key] = replaceCircularEntry(current, seen, value);
-				}
-			}	
-		}
-		return obj;
-	}
-
-	// function to handle array elements
-	function  replaceCircularEntry(obj, seen, value) {
-		if (Array.isArray(obj)) {
-			for(var j = 0; j < obj.length; j++) {
-				obj[j] = replaceCircularEx(obj[j], _.cloneDeep(seen), value);
-			}
-		}
-		else {
-			if (obj && typeof(obj) === 'object') {
-				obj = replaceCircularEx(obj, seen, value);
+				obj = value;
 			}
 		}
 		return obj;
-	}
-
-
-	// entry point for circular
-	function replaceCircular(obj, value) {
-		value = value || circularDefault;
-		return replaceCircularEntry(obj, [], value);
 	}
 	
 	// return the function
 	return {
-		circular: replaceCircular
+		circular: circular
 	};
 };
-},{}],2:[function(_dereq_,module,exports){
+},{}],2:[function(require,module,exports){
 /**
  * Deep Pluck objects/collections
  * 
@@ -214,7 +199,7 @@ module.exports = function(env) {
 		deepPluck: deepPluck
 	};
 };
-},{}],3:[function(_dereq_,module,exports){
+},{}],3:[function(require,module,exports){
 /**
  * Prune JavaScript objects using dot notation and other stuff
  * 
@@ -224,7 +209,7 @@ module.exports = function(env) {
  */
 
 // external modules
-var lodash = _dereq_('lodash');
+var lodash = require('lodash');
 
 // shared modules
 var env = {
@@ -232,20 +217,85 @@ var env = {
 };
 
 // import local modules
-env.prune     = _dereq_('./prune')(env);
-env.circular  = _dereq_('./circular')(env);
-env.deeppluck = _dereq_('./deeppluck')(env);
+env.prune     = require('./prune')(env);
+env.circular  = require('./circular')(env);
+env.deeppluck = require('./deeppluck')(env);
+env.mergepush = require('./mergepush')(env);
 
 // return module object
 module.exports = {
 	type      : 'dotprune',
-	version   : '0.1.5',
+	version   : '0.1.7',
 	env       : env,
 	prune     : env.prune.prune,
 	circular  : env.circular.circular,
-	deepPluck : env.deeppluck.deepPluck
+	deepPluck : env.deeppluck.deepPluck,
+	mergePush : env.mergepush.mergePush
 };
-},{"./circular":1,"./deeppluck":2,"./prune":4,"lodash":5}],4:[function(_dereq_,module,exports){
+},{"./circular":1,"./deeppluck":2,"./mergepush":4,"./prune":5,"lodash":6}],4:[function(require,module,exports){
+/**
+ * Merge JavaScript objects and push or concat any array values
+ * 
+ * @author Branden Horiuchi <bhoriuchi@gmail.com>
+ * @license MIT
+ * 
+ */
+module.exports = function(env) {
+	var _ = env.lodash;
+	
+	
+	// does the actual merge operation
+	function merge(target, source) {
+
+		// if both objects are arrays, push any values that dont exist
+		if (Array.isArray(target)) {
+			
+			var src = Array.isArray(source) ? source : [source];
+			
+			_.forEach(src, function(s) {
+				if (!_.find(target, s) && !_.contains(target, s)) {
+					target.push(s);
+				}
+			});
+			return target;
+		}
+		else if (_.isObject(target) && _.isObject(source)) {
+			_.forEach(source, function(v, k) {
+				target[k] = _.has(target, k) ? merge(target[k], v) : v;
+			});
+			return target;
+		}
+		else {
+			return source;
+		}
+	}
+	
+	
+	// main merge function
+	function mergePush() {
+		
+		// check that there are at least 2 arguments
+		if (arguments.length < 2) {
+			throw 'a merge requires a minumum of 2 objects';
+		}
+		
+		// set the target as the first argument
+		var target = arguments[0];
+		
+		// loop through the rest of the arguments and call the merge function
+		for (var i = 1; i < arguments.length; i++) {
+			merge(target, arguments[i]);
+		}
+		
+		// return the target
+		return target;
+	}
+	
+	return {
+		mergePush: mergePush
+	};
+};
+},{}],5:[function(require,module,exports){
 /**
  * Prune JavaScript objects using dot notation
  * 
@@ -406,7 +456,7 @@ module.exports = function(env) {
 		prune: prune
 	};
 };
-},{}],5:[function(_dereq_,module,exports){
+},{}],6:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -12761,5 +12811,4 @@ module.exports = function(env) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[3])(3)
-});
+},{}]},{},[3]);
