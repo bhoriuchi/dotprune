@@ -1,6 +1,6 @@
 {
   "name": "dotprune",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Deep filters for Javascript objects using dot notation",
   "main": "lib/dotprune.js",
   "repository": {
@@ -18,7 +18,11 @@
     "pluck",
     "deep",
     "deeppluck",
-    "pluckdeep"
+    "pluckdeep",
+    "stringify",
+    "functions",
+    "regular",
+    "expressions"
   ],
   "author": "Branden Horiuchi <bhoriuchi@gmail.com>",
   "license": "MIT",
