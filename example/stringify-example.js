@@ -13,7 +13,15 @@ var obj = {
 	num: 10,
 	o: {
 		k: 'val',
-		k2: 'val2'
+		k2: 'val2',
+		fnIndented: function() {
+			console.log('indented function');
+		},
+		o: {
+			fnIndented2: function() {
+				return '2x';
+			}
+		}
 	},
 	a: [1,2,3],
 	nl: null,
@@ -28,5 +36,8 @@ function replacer(k, v) {
 	return v;
 }
 
-console.log(dotprune.stringify(obj, null, '  '));
+var str = dotprune.stringify(obj, null, '\t');
+
+//console.log(str.replace(/\n/g, '\n\t\t'));
+console.log(str);
 

@@ -1,6 +1,6 @@
 {
   "name": "dotprune",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Deep filters for Javascript objects using dot notation",
   "main": "lib/dotprune.js",
   "repository": {
