@@ -226,7 +226,7 @@ env.stringify = require('./stringify')(env);
 // return module object
 module.exports = {
 	type      : 'dotprune',
-	version   : '0.1.8',
+	version   : '0.1.9',
 	env       : env,
 	prune     : env.prune.prune,
 	circular  : env.circular.circular,
@@ -520,9 +520,13 @@ module.exports = function(env) {
 		else if (type === 'Function') {
 			var o = obj.toString();
 			if (replacer === undefined || !space) {
-				o = o.replace(/\n/g, ' ');
+				o = o.replace(/\s+/g, ' ');
 			}
-			output += o.replace(/\t/g, space) + ',' + ret;
+			else {
+				o = o.replace(/\n\t+/g, '\n' + spaces + space)
+				.replace(/\n\t+}$/, '\n' + spaces + '}');	
+			}
+			output += o + ',' + ret;
 		}
 		else if (type === 'Boolean') {
 			output += String(obj) + ',' + ret;
