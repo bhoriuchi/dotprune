@@ -226,7 +226,7 @@ env.stringify = require('./stringify')(env);
 // return module object
 module.exports = {
 	type      : 'dotprune',
-	version   : '0.1.9',
+	version   : '0.1.10',
 	env       : env,
 	prune     : env.prune.prune,
 	circular  : env.circular.circular,
@@ -467,7 +467,8 @@ module.exports = function(env) {
  * 
  */
 module.exports = function(env) {
-	var _ = env.lodash;
+	var _     = env.lodash;
+	var endRx = /,\n?$/;
 	
 	function getType(obj) {
 		return Object.prototype.toString.call(obj)
@@ -476,13 +477,12 @@ module.exports = function(env) {
 	}
 	
 	
-	// function to do stringifying
+	// function to do stringification
 	function toStr(obj, replacer, space, depth) {
 		
 		var type   = getType(obj);
 		var output = '';
 		var ret    = (replacer !== undefined && space) ? '\n' : '';
-		var endRx  = new RegExp(',' + ret + '$');
 		
 		depth      = depth    || 0;
 		space      = space    || '';
@@ -523,8 +523,14 @@ module.exports = function(env) {
 				o = o.replace(/\s+/g, ' ');
 			}
 			else {
-				o = o.replace(/\n\t+/g, '\n' + spaces + space)
-				.replace(/\n\t+}$/, '\n' + spaces + '}');	
+				var fnIndent = o.match('\n[ \t]+');
+				
+				if (fnIndent) {
+					var fnRx = new RegExp(fnIndent[0].replace(/\n/g, '\\n').replace(/\t/g, '\\t'), "g");
+					o = o.replace(fnRx, '\n' + spaces + space)
+					.replace(/\s+}$/, '\n' + spaces + '}')
+					.replace(/\t/g, space);	
+				}	
 			}
 			output += o + ',' + ret;
 		}
@@ -535,7 +541,7 @@ module.exports = function(env) {
 			output += obj + ',' + ret;
 		}
 		else {
-			output += ['"', String(obj), '",', ret].join('');
+			output += ['"', String(obj).replace(/"/g, '\\"'), '",', ret].join('');
 		}
 		
 		// return the output
@@ -549,7 +555,6 @@ module.exports = function(env) {
 		// call the toStr function on the main object and strip
 		// the final return and comma
 		var ret   = (replacer === null && space) ? '\n' : '';
-		var endRx = new RegExp(',' + ret + '$');
 		return toStr(obj, replacer, space).replace(endRx, '');
 	}
 	
